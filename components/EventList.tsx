@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   FlatList,
   StyleSheet,
   Text,
   StatusBar,
-  Button,
-  Alert
+  Pressable,
 } from "react-native";
+import { AppContext } from "../context";
+import { Types } from "../reducers/reducers";
 
 type ItemType = {
   title: string;
@@ -39,15 +40,24 @@ const MOCK_DATA = [
   },
 ];
 
-const Item = ({ title }: ItemType) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-    <Button
-      title="Press me"
-      onPress={() => Alert.alert("Simple Button pressed")}
-    />
-  </View>
-);
+const Item = ({ title }: ItemType) => {
+  const { dispatch } = useContext(AppContext);
+
+  return (
+    <View style={styles.item}>
+      <Pressable
+        onPress={() =>
+          dispatch({
+            type: Types.ShowModal,
+            payload: true,
+          })
+        }
+      >
+        <Text style={styles.title}>{title}</Text>
+      </Pressable>
+    </View>
+  );
+};
 
 const EventList = () => {
   const renderItem = ({ item }: RenderItemType) => <Item title={item.title} />;
