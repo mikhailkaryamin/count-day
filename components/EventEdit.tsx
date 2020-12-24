@@ -6,9 +6,13 @@ import {
   Modal,
   StyleSheet,
   View,
+  ScrollView,
   Button,
+  Text,
 } from "react-native";
 import DatePicker from "./DatePicker";
+import CountTypesList from "./CountTypesList";
+import CountOnlyDaysList from "./CountOnlyDaysList";
 
 const EventEdit: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -17,30 +21,42 @@ const EventEdit: React.FC = () => {
     <View>
       <Modal animationType="fade" transparent={true} visible={state.showModal}>
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.modalItem}>
-              <TextInput
-                placeholder="Name event (optional)"
-                style={{ ...styles.textInput, ...styles.nameEvent }}
-                maxLength={100}
-              />
+          <ScrollView>
+            <View style={styles.modalView}>
+              <View style={styles.modalItem}>
+                <Text style={styles.modalTitle}>Title</Text>
+                <TextInput
+                  placeholder="What is on that day? (optional)"
+                  style={{ ...styles.textInput, ...styles.nameEvent }}
+                  maxLength={100}
+                />
+              </View>
+              <View style={styles.modalItem}>
+                <Text style={styles.modalTitle}>Date</Text>
+                <DatePicker />
+              </View>
+              <View style={{ ...styles.modalSelectCount, ...styles.modalItem }}>
+                <Text style={styles.modalTitle}>Count for</Text>
+                <CountTypesList />
+              </View>
+              <View style={styles.modalItem}>
+                <Text style={styles.modalTitle}>Count only selection days</Text>
+                <CountOnlyDaysList />
+              </View>
+              <View style={styles.modalItem}>
+                <Button title="Add event" color="#63f542" onPress={() => ""} />
+              </View>
+              <View style={styles.modalItem}>
+                <Button
+                  color="#f54542"
+                  title="Close edit event"
+                  onPress={() => {
+                    dispatch(ActionCreator.showModal(false));
+                  }}
+                />
+              </View>
             </View>
-            <View style={styles.modalItem}>
-              <DatePicker />
-            </View>
-            <View style={styles.modalItem}>
-              <Button title="Add event" color="#63f542" onPress={() => ""} />
-            </View>
-            <View style={styles.modalItem}>
-              <Button
-                color="#f54542"
-                title="Close edit event"
-                onPress={() => {
-                  dispatch(ActionCreator.showModal(false));
-                }}
-              />
-            </View>
-          </View>
+          </ScrollView>
         </View>
       </Modal>
     </View>
@@ -52,13 +68,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: 50,
   },
   modalView: {
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -68,11 +84,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,
@@ -89,9 +100,18 @@ const styles = StyleSheet.create({
     height: 40,
   },
   modalItem: {
+    zIndex: 100,
     alignSelf: "stretch",
     marginBottom: 10,
   },
+  modalSelectCount: {
+    zIndex: 150,
+  },
+  modalTitle: {
+    color: "blue",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  }
 });
 
 export default EventEdit;
