@@ -14,6 +14,8 @@ import DatePicker from "./DatePicker";
 import CountTypesList from "./CountTypesList";
 import CountOnlyDaysList from "./CountOnlyDaysList";
 
+import { ColorScheme } from "../consts/consts";
+
 const EventEdit: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
 
@@ -26,9 +28,10 @@ const EventEdit: React.FC = () => {
               <View style={styles.modalItem}>
                 <Text style={styles.modalTitle}>Title</Text>
                 <TextInput
+                  placeholderTextColor={ColorScheme.LIGHT_WHITE}
                   placeholder="What is on that day? (optional)"
                   style={{ ...styles.textInput, ...styles.nameEvent }}
-                  maxLength={100}
+                  maxLength={25}
                 />
               </View>
               <View style={styles.modalItem}>
@@ -44,11 +47,11 @@ const EventEdit: React.FC = () => {
                 <CountOnlyDaysList />
               </View>
               <View style={styles.modalItem}>
-                <Button title="Add event" color="#63f542" onPress={() => ""} />
+                <Button title="Add event" color={ColorScheme.LIGHTER_BLUE} onPress={() => ""} />
               </View>
               <View style={styles.modalItem}>
                 <Button
-                  color="#f54542"
+                  color={ColorScheme.DARK_BLUE_SUB}
                   title="Close edit event"
                   onPress={() => {
                     dispatch(ActionCreator.showModal(false));
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: ColorScheme.LIGHTEST_BLUE,
     borderRadius: 20,
     padding: 20,
     alignItems: "center",
@@ -98,6 +101,7 @@ const styles = StyleSheet.create({
   },
   nameEvent: {
     height: 40,
+    color: ColorScheme.LIGHT_WHITE,
   },
   modalItem: {
     zIndex: 100,
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
     zIndex: 150,
   },
   modalTitle: {
-    color: "blue",
+    color: ColorScheme.LIGHT_WHITE,
     fontWeight: "bold",
     textTransform: "uppercase",
   }

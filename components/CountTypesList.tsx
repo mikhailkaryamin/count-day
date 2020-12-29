@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 
+import { ColorScheme } from "../consts/consts";
+
 const COUNT_TYPES = [
   { label: "Hour", value: "hour" },
   { label: "Day", value: "day" },
@@ -14,7 +16,7 @@ const CountTypesList = () => {
   return (
     <Picker
       selectedValue={type}
-      style={{ height: 50 }}
+      style={{ height: 50, color: ColorScheme.LIGHT_WHITE }}
       onValueChange={(item) => setType(item.toString())}
       mode="dropdown"
     >

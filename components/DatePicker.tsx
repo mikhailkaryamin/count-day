@@ -4,6 +4,8 @@ import DateTimePicker, {
   Event as EventType,
 } from "@react-native-community/datetimepicker";
 
+import { ColorScheme } from "../consts/consts";
+
 const DatePicker = () => {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderColor: "gray",
     borderBottomWidth: 1,
+    color: ColorScheme.LIGHT_WHITE
   }
 });
 

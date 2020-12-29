@@ -3,6 +3,8 @@ import { View, FlatList, StyleSheet, Text, Pressable } from "react-native";
 import { AppContext } from "../context";
 import { Types } from "../reducers/reducers";
 
+import { ColorScheme } from "../consts/consts";
+
 type ItemType = {
   title: string;
   date: string;
@@ -58,7 +60,8 @@ const Item = ({ title, date }: ItemType) => {
             <Text style={styles.title}>{date}</Text>
           </View>
           <View style={styles.itemRight}>
-            <Text>25</Text>
+            <Text style={{ ...styles.title, ...styles.countNumber }}>25</Text>
+            <Text style={{ ...styles.title, ...styles.countType }}>d</Text>
           </View>
         </View>
       </Pressable>
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   item: {
-    backgroundColor: "#f9c2ff",
+    backgroundColor: ColorScheme.DARK_BLUE_MAIN,
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -102,18 +105,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexBasis: "60%",
-    borderWidth: 3,
-    borderColor: "blue",
-    borderRadius: 10,
   },
   itemRight: {
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
     flexBasis: "40%",
+    flexDirection: "row",
+    borderRadius: 15,
   },
   title: {
     fontSize: 20,
+    color: ColorScheme.LIGHT_WHITE,
+  },
+  countNumber: {
+    fontSize: 45,
+    paddingRight: 5,
+  },
+  countType: {
+    fontSize: 32,
   },
 });
 

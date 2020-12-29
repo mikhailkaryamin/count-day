@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 
+import { ColorScheme } from "../consts/consts";
+
 const COUNT_DAYS = [
   { name: "Monday", id: "monday" },
   { name: "Tuesday", id: "tuesday" },
@@ -32,6 +34,7 @@ const CountOnlyDaysList = () => {
           <View key={day.id} style={styles.item}>
             <CheckBox
               value={checkList[day.id]}
+              tintColors={{ true: ColorScheme.DARK_BLUE_MAIN, false: ColorScheme.DARK_BLUE_MAIN }}
               onValueChange={(value) =>
                 setCheckList((checkListPrev) => {
                   const currentDay = day.id;
@@ -42,7 +45,7 @@ const CountOnlyDaysList = () => {
                 })
               }
             />
-            <Text>{`${day.name}`}</Text>
+            <Text style={styles.title}>{`${day.name}`}</Text>
           </View>
         );
       })}
@@ -54,7 +57,10 @@ const styles = StyleSheet.create({
   container: {},
   item: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+  },
+  title: {
+    color: ColorScheme.LIGHT_WHITE,
   },
 });
 
