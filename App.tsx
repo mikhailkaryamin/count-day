@@ -1,12 +1,12 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { AppProvider } from "./context";
+import { AppProvider } from "./shared/context";
 
 import useCachedResources from "./hooks/useCachedResources";
 
 import Events from "./screens/Events";
 
-export default function App() {
+const App = () => {
   const isLoadingComplete = useCachedResources();
 
   if (!isLoadingComplete) {
@@ -20,4 +20,7 @@ export default function App() {
       </AppProvider>
     );
   }
-}
+};
+
+export default App;
+
