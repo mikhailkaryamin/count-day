@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 
-import { ColorScheme } from "../consts/consts";
+import { ColorScheme } from "../shared/consts";
 
 const COUNT_DAYS = [
   { name: "Monday", id: "monday" },

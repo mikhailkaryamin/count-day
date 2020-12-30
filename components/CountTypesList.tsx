@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 
-import { ColorScheme } from "../consts/consts";
+import { ColorScheme } from "../shared/consts";
 
 const COUNT_TYPES = [
   { label: "Hour", value: "hour" },
