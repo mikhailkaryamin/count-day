@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AppContext } from "../context";
+import { AppContext } from "../shared/context";
 import { ActionCreator } from "../actions/actions";
 import {
   TextInput,
@@ -14,11 +14,11 @@ import DatePicker from "./DatePicker";
 import CountTypesList from "./CountTypesList";
 import CountOnlyDaysList from "./CountOnlyDaysList";
 
-import { ColorScheme } from "../consts/consts";
+import { ColorScheme } from "../shared/consts";
 
 const EventEdit: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
-
+  console.log("EventEdit", state);
   return (
     <View>
       <Modal animationType="fade" transparent={true} visible={state.showModal}>
@@ -31,6 +31,9 @@ const EventEdit: React.FC = () => {
                   placeholderTextColor={ColorScheme.LIGHT_WHITE}
                   placeholder="What is on that day? (optional)"
                   style={{ ...styles.textInput, ...styles.nameEvent }}
+                  onChangeText={(text) => {
+                    dispatch(ActionCreator.setTitle(text));
+                  }}
                   maxLength={25}
                 />
               </View>
