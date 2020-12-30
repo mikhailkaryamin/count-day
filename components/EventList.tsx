@@ -1,22 +1,10 @@
 import React, { useContext } from "react";
 import { View, FlatList, StyleSheet, Text, Pressable } from "react-native";
-import { AppContext } from "../context";
-import { Types } from "../reducers/reducers";
+import { AppContext } from "../shared/context";
+import { Types } from "../shared/types";
 
-import { ColorScheme } from "../consts/consts";
-
-type ItemType = {
-  title: string;
-  date: string;
-};
-
-type RenderItemType = {
-  item: {
-    title: string;
-    id: string;
-    date: string;
-  };
-};
+import { ColorScheme } from "../shared/consts";
+import { ItemType, RenderItemType } from "../shared/types";
 
 const MOCK_DATA = [
   {
