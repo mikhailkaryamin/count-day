@@ -1,21 +1,10 @@
 import React, { createContext, useReducer, Dispatch } from "react";
 import {
   modalReducer,
-  ModalActions,
   eventReducer,
-  EventActions,
-} from "./reducers/reducers";
+} from "../reducers/reducers";
 
-type InitialStateType = {
-  showModal: boolean;
-  currentEvent: {
-    id: number;
-  };
-};
-
-type PropsProvider = {
-  children: React.ReactNode;
-};
+import { InitialStateType, PropsProvider, EventActions, ModalActions } from "./types";
 
 const initialState = {
   showModal: false,
