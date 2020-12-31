@@ -1,13 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-
 import DateTimePicker, {
   Event as EventType,
 } from "@react-native-community/datetimepicker";
 
-import { AppContext } from "../shared/context";
 import { ActionCreator } from "../actions/actions";
 
+import { AppContext } from "../shared/context";
 import { ColorScheme } from "../shared/consts";
 
 const DatePicker = () => {
@@ -18,14 +17,21 @@ const DatePicker = () => {
   const onChange = (evt: EventType, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    dispatch(ActionCreator.setDate(currentDate));
-    setShow(false);
   };
   const dateString = date?.toLocaleDateString();
 
   const onPress = () => {
     setShow(true);
   };
+
+  useEffect(() => {
+    setShow(false);
+  });
+
+  useEffect(() => {
+    dispatch(ActionCreator.setDate(date));
+    setShow(false);
+  }, [date]);
 
   return (
     <View>
