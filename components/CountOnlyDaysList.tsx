@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 
+import { ActionCreator } from "../actions/actions";
+
+import { AppContext } from "../shared/context";
 import { ColorScheme } from "../shared/consts";
+import { CountOnlySelectionDay } from "../shared/types";
 
 const COUNT_DAYS = [
   { name: "Monday", id: "monday" },
@@ -25,7 +29,13 @@ const CHECK_LIST = {
 };
 
 const CountOnlyDaysList = () => {
-  const [checkList, setCheckList] = useState(CHECK_LIST);
+  const [daysList, setDaysList] = useState<CountOnlySelectionDay>(CHECK_LIST);
+
+  const { dispatch } = useContext(AppContext);
+
+  useEffect(() => {
+    dispatch(ActionCreator.setCountOnlySelectionDay(daysList));
+  }, [daysList]);
 
   return (
     <View style={styles.container}>
@@ -33,13 +43,13 @@ const CountOnlyDaysList = () => {
         return (
           <View key={day.id} style={styles.item}>
             <CheckBox
-              value={checkList[day.id]}
+              value={daysList[day.id]}
               tintColors={{ true: ColorScheme.DARK_BLUE_MAIN, false: ColorScheme.DARK_BLUE_MAIN }}
               onValueChange={(value) =>
-                setCheckList((checkListPrev) => {
+                setDaysList((daysListPrev) => {
                   const currentDay = day.id;
                   return {
-                    ...checkListPrev,
+                    ...daysListPrev,
                     [currentDay]: value,
                   };
                 })
