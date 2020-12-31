@@ -24,7 +24,7 @@ type EventPayload = {
   [Types.SetDate]: Date;
   [Types.SetTitle]: string;
   [Types.SetCountFor]: CountFor;
-  [Types.SetCountOnlySelectionDay]: string[];
+  [Types.SetCountOnlySelectionDay]: CountOnlySelectionDay;
 };
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -43,13 +43,22 @@ type ModalPayload = {
 };
 
 export type CountFor = "hour" | "day" | "week" | "month" | "year";
+export type CountOnlySelectionDay = {
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
+}
 
 export type EventType = {
   id: number;
   date: Date;
   title: string;
   countFor: CountFor;
-  countOnlySelectionDay: string[],
+  countOnlySelectionDay: CountOnlySelectionDay,
 };
 
 export type InitialStateType = {
@@ -69,3 +78,7 @@ export enum Types {
 }
 
 export type ModalActions = ActionMap<ModalPayload>[keyof ActionMap<ModalPayload>];
+
+// hooks
+
+export type statusStorage = "success" | "error" | undefined;
