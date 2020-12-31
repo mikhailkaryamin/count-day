@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { View, FlatList, StyleSheet, Text, Pressable } from "react-native";
-import { AppContext } from "../shared/context";
-import { Types } from "../shared/types";
 
+
+import { Types } from "../shared/types";
+import { AppContext } from "../shared/context";
 import { ColorScheme } from "../shared/consts";
 import { ItemType, RenderItemType } from "../shared/types";
 
