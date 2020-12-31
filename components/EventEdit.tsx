@@ -1,6 +1,4 @@
 import React, { useContext } from "react";
-import { AppContext } from "../shared/context";
-import { ActionCreator } from "../actions/actions";
 import {
   TextInput,
   Modal,
@@ -10,14 +8,23 @@ import {
   Button,
   Text,
 } from "react-native";
+
+
 import DatePicker from "./DatePicker";
 import CountTypesList from "./CountTypesList";
 import CountOnlyDaysList from "./CountOnlyDaysList";
 
+import { ActionCreator } from "../actions/actions";
+
+import { AppContext } from "../shared/context";
 import { ColorScheme } from "../shared/consts";
 
 const EventEdit: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
+
+  const isCountForDay = state.currentEvent?.countFor === "day";
+
+  // eslint-disable-next-line no-console
   console.log("EventEdit", state);
   return (
     <View>
@@ -45,12 +52,20 @@ const EventEdit: React.FC = () => {
                 <Text style={styles.modalTitle}>Count for</Text>
                 <CountTypesList />
               </View>
+              {isCountForDay && (
+                <View style={styles.modalItem}>
+                  <Text style={styles.modalTitle}>
+                    Count only selection days
+                  </Text>
+                  <CountOnlyDaysList />
+                </View>
+              )}
               <View style={styles.modalItem}>
-                <Text style={styles.modalTitle}>Count only selection days</Text>
-                <CountOnlyDaysList />
-              </View>
-              <View style={styles.modalItem}>
-                <Button title="Add event" color={ColorScheme.LIGHTER_BLUE} onPress={() => ""} />
+                <Button
+                  title="Add event"
+                  color={ColorScheme.LIGHTER_BLUE}
+                  onPress={() => ""}
+                />
               </View>
               <View style={styles.modalItem}>
                 <Button
@@ -118,7 +133,7 @@ const styles = StyleSheet.create({
     color: ColorScheme.LIGHT_WHITE,
     fontWeight: "bold",
     textTransform: "uppercase",
-  }
+  },
 });
 
 export default EventEdit;
