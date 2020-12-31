@@ -1,4 +1,4 @@
-import { Types, ModalActions, EventActions, CountFor } from "../shared/types";
+import { Types, ModalActions, EventActions, CountFor, CountOnlySelectionDay } from "../shared/types";
 
 const ActionCreator = {
   showModal: (payload: boolean): ModalActions | EventActions => ({
@@ -17,7 +17,7 @@ const ActionCreator = {
     type: Types.SetCountFor,
     payload,
   }),
-  setCountOnlySelectionDay: (payload: string[]): ModalActions | EventActions => ({
+  setCountOnlySelectionDay: (payload: CountOnlySelectionDay): ModalActions | EventActions => ({
     type: Types.SetCountOnlySelectionDay,
     payload,
   }),
