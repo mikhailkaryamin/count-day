@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { EventType, statusStorage } from "../shared/types";
+import { EventType, StatusStorageType } from "../shared/types";
 
 const useStoreData = (value: EventType, key: string) => {
-  const [status, setStatus] = useState<statusStorage>();
+  const [status, setStatus] = useState<StatusStorageType>();
 
   useEffect(() => {
     const storeData = async () => {
