@@ -6,6 +6,12 @@ const ColorScheme = {
   LIGHTEST_BLUE: "#4DA8DA",
 };
 
+const StatusStorage = {
+  ERROR: "error",
+  SUCCESS: "success",
+} as const;
+
 export {
   ColorScheme,
+  StatusStorage,
 };
