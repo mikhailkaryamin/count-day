@@ -1,4 +1,8 @@
+import { StatusStorage } from "./consts";
+
 // Components types
+type children = React.ReactNode;
+
 export type ItemType = {
   title: string;
   date: string;
@@ -13,18 +17,22 @@ export type RenderItemType = {
 };
 
 export type PropsProvider = {
-  children: React.ReactNode;
+  children: children;
 };
 
+export type EventItemContainerType = {
+  children: children;
+  bgColor: string;
+}
 
 // Reducers and context types
 
 type EventPayload = {
-  [Types.SetCurrentEventId]: number;
-  [Types.SetDate]: Date;
-  [Types.SetTitle]: string;
-  [Types.SetCountFor]: CountFor;
-  [Types.SetCountOnlySelectionDay]: CountOnlySelectionDay;
+  [ActionsTypes.SetCurrentEventId]: number;
+  [ActionsTypes.SetDate]: Date;
+  [ActionsTypes.SetTitle]: string;
+  [ActionsTypes.SetCountFor]: CountFor;
+  [ActionsTypes.SetCountOnlySelectionDay]: CountOnlySelectionDay;
 };
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -39,7 +47,7 @@ type ActionMap<M extends { [index: string]: any }> = {
 };
 
 type ModalPayload = {
-  [Types.ShowModal]: boolean;
+  [ActionsTypes.ShowModal]: boolean;
 };
 
 export type CountFor = "hour" | "day" | "week" | "month" | "year";
@@ -68,7 +76,7 @@ export type InitialStateType = {
 
 export type EventActions = ActionMap<EventPayload>[keyof ActionMap<EventPayload>];
 
-export enum Types {
+export enum ActionsTypes {
   ShowModal = "SHOW_MODAL",
   SetCurrentEventId = "SET_CURRENT_EVENT_ID",
   SetDate = "SET_DATE",
@@ -81,4 +89,4 @@ export type ModalActions = ActionMap<ModalPayload>[keyof ActionMap<ModalPayload>
 
 // hooks
 
-export type statusStorage = "success" | "error" | undefined;
+export type StatusStorageType = typeof StatusStorage[keyof typeof StatusStorage] | undefined;

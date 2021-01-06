@@ -1,24 +1,24 @@
-import { Types, ModalActions, EventActions, CountFor, CountOnlySelectionDay } from "../shared/types";
+import { ActionsTypes, ModalActions, EventActions, CountFor, CountOnlySelectionDay } from "../shared/types";
 
 const ActionCreator = {
   showModal: (payload: boolean): ModalActions | EventActions => ({
-    type: Types.ShowModal,
+    type: ActionsTypes.ShowModal,
     payload,
   }),
   setTitle: (payload: string): ModalActions | EventActions => ({
-    type: Types.SetTitle,
+    type: ActionsTypes.SetTitle,
     payload,
   }),
   setDate: (payload: Date): ModalActions | EventActions => ({
-    type: Types.SetDate,
+    type: ActionsTypes.SetDate,
     payload,
   }),
   setCountFor: (payload: CountFor): ModalActions | EventActions => ({
-    type: Types.SetCountFor,
+    type: ActionsTypes.SetCountFor,
     payload,
   }),
   setCountOnlySelectionDay: (payload: CountOnlySelectionDay): ModalActions | EventActions => ({
-    type: Types.SetCountOnlySelectionDay,
+    type: ActionsTypes.SetCountOnlySelectionDay,
     payload,
   }),
 };
