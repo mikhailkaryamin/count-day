@@ -1,8 +1,8 @@
-import { EventType, Types, ModalActions, EventActions } from "../shared/types";
+import { EventType, ActionsTypes, ModalActions, EventActions } from "../shared/types";
 
 const modalReducer = (state: boolean, action: ModalActions | EventActions) => {
   switch (action.type) {
-    case Types.ShowModal:
+    case ActionsTypes.ShowModal:
       return !state;
     default:
       return state;
@@ -12,27 +12,27 @@ const modalReducer = (state: boolean, action: ModalActions | EventActions) => {
 
 const eventReducer = (state: EventType | null, action: ModalActions | EventActions) => {
   switch (action.type) {
-    case Types.SetCurrentEventId:
+    case ActionsTypes.SetCurrentEventId:
       return {
         ...state,
         id: action.payload,
       };
-    case Types.SetDate:
+    case ActionsTypes.SetDate:
       return {
         ...state,
         date: action.payload,
       };
-    case Types.SetTitle:
+    case ActionsTypes.SetTitle:
       return {
         ...state,
         title: action.payload,
       };
-    case Types.SetCountFor:
+    case ActionsTypes.SetCountFor:
       return {
         ...state,
         countFor: action.payload,
       };
-    case Types.SetCountOnlySelectionDay:
+    case ActionsTypes.SetCountOnlySelectionDay:
       return {
         ...state,
         countOnlySelectionDay: action.payload,
