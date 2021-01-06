@@ -3,6 +3,7 @@ import { View, StyleSheet, StatusBar } from "react-native";
 
 import EventList from "../components/EventList";
 import EventEdit from "../components/EventEdit";
+import ButtonAdd from "../components/ButtonAdd";
 
 const Events = () => {
   return (
@@ -10,6 +11,7 @@ const Events = () => {
       <StatusBar />
       <EventList />
       <EventEdit />
+      <ButtonAdd />
     </View>
   );
 };
