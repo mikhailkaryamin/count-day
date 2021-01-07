@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
 
-import EventList from "../components/EventList";
+import EventsList from "../components/EventsList";
 import EventEdit from "../components/EventEdit";
 import ButtonAdd from "../components/ButtonAdd";
 
@@ -9,7 +9,7 @@ const Events = () => {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <EventList />
+      <EventsList />
       <EventEdit />
       <ButtonAdd />
     </View>
