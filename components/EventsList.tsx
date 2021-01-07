@@ -1,33 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, FlatList, StyleSheet, Text } from "react-native";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
-import { ColorScheme } from "../shared/consts";
+import { ColorScheme, KeyStorage } from "../shared/consts";
 import { ItemType, RenderItemType } from "../shared/types";
 
 import EventItemContainer from "./EventItemContainer";
-
-const MOCK_DATA = [
-  {
-    id: Math.random().toString(12).substring(0),
-    title: "День рождение 1",
-    date: "25/12/20",
-  },
-  {
-    id: Math.random().toString(12).substring(0),
-    title: "День рождение 2",
-    date: "26/12/20",
-  },
-  {
-    id: Math.random().toString(12).substring(0),
-    title: "День рождение 3",
-    date: "21/12/20",
-  },
-  {
-    id: Math.random().toString(12).substring(0),
-    title: "День рождение 4",
-    date: "29/12/20",
-  },
-];
 
 const Item = ({ title, date }: ItemType) => {
   return (
@@ -48,15 +26,28 @@ const Item = ({ title, date }: ItemType) => {
   );
 };
 
-const EventList = () => {
+const EventsList = () => {
+  const [value, setValue] = useState(null);
+  const { getItem } = useAsyncStorage(KeyStorage.EVENT);
+
+  const readItemFromStorage = async () => {
+    const item = await getItem();
+    setValue(item);
+  };
+
+  useEffect(() => {
+    readItemFromStorage();
+  }, []);
+
   const renderItem = ({ item }: RenderItemType) => (
     <Item title={item.title} date={item.date} />
   );
 
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={MOCK_DATA}
+        data={[]}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
@@ -100,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventList;
+export default EventsList;
