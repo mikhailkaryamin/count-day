@@ -90,3 +90,4 @@ export type ModalActions = ActionMap<ModalPayload>[keyof ActionMap<ModalPayload>
 // hooks
 
 export type StatusStorageType = typeof StatusStorage[keyof typeof StatusStorage] | undefined;
+export type DataStorage = string[][];
