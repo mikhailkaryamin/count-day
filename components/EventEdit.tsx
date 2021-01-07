@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 import DatePicker from "./DatePicker";
 import CountTypesList from "./CountTypesList";
@@ -17,15 +18,20 @@ import CountOnlyDaysList from "./CountOnlyDaysList";
 import { ActionCreator } from "../actions/actions";
 
 import { AppContext } from "../shared/context";
-import { ColorScheme } from "../shared/consts";
+import { ColorScheme, KeyStorage } from "../shared/consts";
 
 const EventEdit: React.FC = () => {
   const { state, dispatch } = useContext(AppContext);
+  const { setItem } = useAsyncStorage(KeyStorage.EVENT);
 
   const isCountForDay = state.currentEvent?.countFor === "day";
-
+  const currentEvent = JSON.stringify(state.currentEvent);
   // eslint-disable-next-line no-console
   console.log("EventEdit", state);
+
+  const writeItemToStorage = async (eventData) => {
+    await setItem(eventData);
+  };
   return (
     <View>
       <Modal animationType="fade" transparent={true} visible={state.showModal}>
@@ -64,7 +70,7 @@ const EventEdit: React.FC = () => {
                 <Button
                   title="Add event"
                   color={ColorScheme.LIGHTER_BLUE}
-                  onPress={() => ""}
+                  onPress={() => writeItemToStorage(currentEvent)}
                 />
               </View>
               <View style={styles.modalItem}>
