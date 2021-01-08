@@ -2,29 +2,32 @@ import React, { createContext, useReducer, Dispatch } from "react";
 import {
   modalReducer,
   eventReducer,
+  eventsListReducer
 } from "../reducers/reducers";
 
-import { InitialStateType, PropsProvider, EventActions, ModalActions } from "./types";
+import { InitialStateType, PropsProvider, ActionType } from "./types";
 
 const initialState = {
   showModal: false,
   currentEvent: null,
+  events: [],
 };
 
 const AppContext = createContext<{
   state: InitialStateType;
-  dispatch: Dispatch<EventActions | ModalActions>;
+  dispatch: Dispatch<ActionType>;
 }>({
   state: initialState,
   dispatch: () => null,
 });
 
 const mainReducer = (
-    { showModal, currentEvent }: InitialStateType,
-    action: EventActions | ModalActions
+    { showModal, currentEvent, events }: InitialStateType,
+    action: ActionType
 ) => ({
   showModal: modalReducer(showModal, action),
   currentEvent: eventReducer(currentEvent, action),
+  events: eventsListReducer(events, action),
 });
 
 const AppProvider: React.FC<PropsProvider> = ({ children }: PropsProvider) => {
