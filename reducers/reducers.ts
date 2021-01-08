@@ -1,6 +1,6 @@
-import { EventType, ActionsTypes, ModalActions, EventActions } from "../shared/types";
+import { EventType, EventsListType, ActionsTypes, ActionType } from "../shared/types";
 
-const modalReducer = (state: boolean, action: ModalActions | EventActions) => {
+const modalReducer = (state: boolean, action: ActionType) => {
   switch (action.type) {
     case ActionsTypes.ShowModal:
       return !state;
@@ -9,8 +9,16 @@ const modalReducer = (state: boolean, action: ModalActions | EventActions) => {
   }
 };
 
+const eventsListReducer = (state: EventsListType | null, action: ActionType) => {
+  switch (action.type) {
+    case ActionsTypes.GetEventsList:
+      return action.payload;
+    default:
+      return state;
+  }
+};
 
-const eventReducer = (state: EventType | null, action: ModalActions | EventActions) => {
+const eventReducer = (state: EventType | null, action: ActionType) => {
   switch (action.type) {
     case ActionsTypes.SetCurrentEventId:
       return {
@@ -45,4 +53,5 @@ const eventReducer = (state: EventType | null, action: ModalActions | EventActio
 export {
   modalReducer,
   eventReducer,
+  eventsListReducer
 };
