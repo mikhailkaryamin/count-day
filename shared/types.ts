@@ -6,6 +6,7 @@ type children = React.ReactNode;
 export type ItemType = {
   title: string;
   date: string;
+  countDate: string;
 };
 
 export type RenderItemType = {
@@ -13,6 +14,7 @@ export type RenderItemType = {
     title: string;
     id: string;
     date: string;
+    countDate: string;
   };
 };
 
@@ -26,14 +28,20 @@ export type EventItemContainerType = {
 }
 
 // Reducers and context types
-
-type EventPayload = {
-  [ActionsTypes.SetCurrentEventId]: number;
-  [ActionsTypes.SetDate]: Date;
-  [ActionsTypes.SetTitle]: string;
-  [ActionsTypes.SetCountFor]: CountFor;
-  [ActionsTypes.SetCountOnlySelectionDay]: CountOnlySelectionDay;
+export type InitialStateType = {
+  showModal: boolean;
+  currentEvent: EventType | null;
+  events: EventsListType | [];
 };
+export enum ActionsTypes {
+  GetEventsList = "GET_EVENTS_LIST",
+  ShowModal = "SHOW_MODAL",
+  SetCurrentEventId = "SET_CURRENT_EVENT_ID",
+  SetDate = "SET_DATE",
+  SetTitle = "SET_TITLE",
+  SetCountFor = "SET_COUNT_FOR",
+  SetCountOnlySelectionDay = "SET_COUNT_ONLY_SELECTION_DAY",
+}
 
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -44,10 +52,6 @@ type ActionMap<M extends { [index: string]: any }> = {
     type: Key;
     payload: M[Key];
   }
-};
-
-type ModalPayload = {
-  [ActionsTypes.ShowModal]: boolean;
 };
 
 export type CountFor = "hour" | "day" | "week" | "month" | "year";
@@ -61,33 +65,35 @@ export type CountOnlySelectionDay = {
   sunday: boolean;
 }
 
+type EventPayload = {
+  [ActionsTypes.SetCurrentEventId]: string;
+  [ActionsTypes.SetDate]: string;
+  [ActionsTypes.SetTitle]: string;
+  [ActionsTypes.SetCountFor]: CountFor;
+  [ActionsTypes.SetCountOnlySelectionDay]: CountOnlySelectionDay;
+};
 export type EventType = {
-  id: number;
-  date: Date;
+  id: string;
+  date: string;
   title: string;
   countFor: CountFor;
   countOnlySelectionDay: CountOnlySelectionDay,
 };
+type EventActions = ActionMap<EventPayload>[keyof ActionMap<EventPayload>];
 
-export type InitialStateType = {
-  showModal: boolean;
-  currentEvent: EventType | null;
+type ModalPayload = {
+  [ActionsTypes.ShowModal]: boolean;
 };
+type ModalActions = ActionMap<ModalPayload>[keyof ActionMap<ModalPayload>];
 
-export type EventActions = ActionMap<EventPayload>[keyof ActionMap<EventPayload>];
-
-export enum ActionsTypes {
-  ShowModal = "SHOW_MODAL",
-  SetCurrentEventId = "SET_CURRENT_EVENT_ID",
-  SetDate = "SET_DATE",
-  SetTitle = "SET_TITLE",
-  SetCountFor = "SET_COUNT_FOR",
-  SetCountOnlySelectionDay = "SET_COUNT_ONLY_SELECTION_DAY",
+type EventsListPayload = {
+  [ActionsTypes.GetEventsList]: EventType[];
 }
+type EventsListActions = ActionMap<EventsListPayload>[keyof ActionMap<EventsListPayload>];
+export type EventsListType = EventType[];
 
-export type ModalActions = ActionMap<ModalPayload>[keyof ActionMap<ModalPayload>];
+export type ActionType = EventsListActions | ModalActions | EventActions;
 
 // hooks
-
 export type StatusStorageType = typeof StatusStorage[keyof typeof StatusStorage] | undefined;
 export type DataStorage = string[][];
