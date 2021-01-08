@@ -8,6 +8,7 @@ import {
   Button,
   Text,
 } from "react-native";
+import { nanoid } from "nanoid/async/index.native";
 
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
@@ -25,13 +26,32 @@ const EventEdit: React.FC = () => {
   const { setItem } = useAsyncStorage(KeyStorage.EVENT);
 
   const isCountForDay = state.currentEvent?.countFor === "day";
-  const currentEvent = JSON.stringify(state.currentEvent);
-  // eslint-disable-next-line no-console
-  console.log("EventEdit", state);
 
-  const writeItemToStorage = async (eventData) => {
-    await setItem(eventData);
+  const writeItemToStorage = async () => {
+    const id = await nanoid();
+
+    const currentEvent = {
+      id,
+      ...state.currentEvent
+    };
+
+    const getNewEventsList = () => {
+      let newEventsList;
+
+      if (state.events === null) {
+        newEventsList = JSON.stringify([currentEvent]);
+      } else if (Array.isArray(state.events)) {
+        newEventsList = JSON.stringify([...state.events, currentEvent]);
+      } else {
+        newEventsList = [];
+      }
+
+      return newEventsList;
+    };
+
+    await setItem(getNewEventsList());
   };
+
   return (
     <View>
       <Modal animationType="fade" transparent={true} visible={state.showModal}>
@@ -70,7 +90,7 @@ const EventEdit: React.FC = () => {
                 <Button
                   title="Add event"
                   color={ColorScheme.LIGHTER_BLUE}
-                  onPress={() => writeItemToStorage(currentEvent)}
+                  onPress={() => writeItemToStorage()}
                 />
               </View>
               <View style={styles.modalItem}>
