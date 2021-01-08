@@ -1,11 +1,33 @@
-import * as React from "react";
+import React, { useEffect, useContext } from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+
+import { AppContext } from "../shared/context";
+import { ActionsTypes } from "../shared/types";
+import { KeyStorage } from "../shared/consts";
 
 import EventsList from "../components/EventsList";
 import EventEdit from "../components/EventEdit";
 import ButtonAdd from "../components/ButtonAdd";
 
 const Events = () => {
+  const { dispatch } = useContext(AppContext);
+
+  const { getItem } = useAsyncStorage(KeyStorage.EVENT);
+
+  const readEventsFromStorage = async () => {
+    const eventsListJSON = await getItem();
+    const eventsList = JSON.parse(eventsListJSON);
+    dispatch({
+      type: ActionsTypes.GetEventsList,
+      payload: eventsList
+    });
+  };
+
+  useEffect(() => {
+    readEventsFromStorage();
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar />
