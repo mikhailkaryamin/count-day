@@ -10,7 +10,7 @@ import { InitialStateType, PropsProvider, ActionType } from "./types";
 const initialState = {
   showModal: false,
   currentEvent: null,
-  events: [],
+  events: null,
 };
 
 const AppContext = createContext<{
