@@ -4,10 +4,11 @@ import { View, FlatList, StyleSheet, Text } from "react-native";
 import { AppContext } from "../shared/context";
 import { ColorScheme } from "../shared/consts";
 import { ItemType, RenderItemType } from "../shared/types";
+import { calculateOffset } from "../shared/utils";
 
 import EventItemContainer from "./EventItemContainer";
 
-const Item = ({ title, date, countDate }: ItemType) => {
+const Item = ({ title, date, countDate, countType }: ItemType) => {
   return (
     <EventItemContainer
       bgColor={ColorScheme.DARK_BLUE_MAIN}
@@ -19,7 +20,7 @@ const Item = ({ title, date, countDate }: ItemType) => {
         </View>
         <View style={styles.itemRight}>
           <Text style={{ ...styles.title, ...styles.countNumber }}>{countDate}</Text>
-          <Text style={{ ...styles.title, ...styles.countType }}>d</Text>
+          <Text style={{ ...styles.title, ...styles.countType }}>{countType}</Text>
         </View>
       </View>
     </EventItemContainer>
@@ -28,16 +29,20 @@ const Item = ({ title, date, countDate }: ItemType) => {
 
 const EventsList = () => {
   const { state } = useContext(AppContext);
-  console.log("EventsList", state.events, state);
+
   const getFormatEventsList = () => {
     if (state.events?.length) {
       const formatEvents = state.events.map((item) => {
-        const itemDate = new Date(item.date);
+        const dateEvent = new Date(item.date).toLocaleDateString();
+        const offsetCount = calculateOffset(item.date, item.countFor);
+        const countTypeChar = item.countFor.charAt(0);
+
         return ({
           id: item.id,
           title: item.title,
-          date: itemDate.toLocaleDateString(),
-          countDate: "25",
+          date: dateEvent,
+          countDate: offsetCount,
+          countType: countTypeChar,
         });
       });
 
@@ -48,7 +53,7 @@ const EventsList = () => {
   };
 
   const renderItem = ({ item }: RenderItemType) => (
-    <Item title={item.title} date={item.date} countDate={item.countDate} />
+    <Item title={item.title} date={item.date} countDate={item.countDate} countType={item.countType}/>
   );
 
   return (
