@@ -29,7 +29,9 @@ const DatePicker = () => {
   });
 
   useEffect(() => {
-    dispatch(ActionCreator.setDate(date));
+    const dateJSON = date.toJSON();
+
+    dispatch(ActionCreator.setDate(dateJSON));
     setShow(false);
   }, [date]);
 
