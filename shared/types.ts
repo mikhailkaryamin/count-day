@@ -1,4 +1,4 @@
-import { StatusStorage } from "./consts";
+import { StatusStorage, CountTypes } from "./consts";
 
 // Components types
 type children = React.ReactNode;
@@ -7,6 +7,7 @@ export type ItemType = {
   title: string;
   date: string;
   countDate: string;
+  countType: string;
 };
 
 export type RenderItemType = {
@@ -15,6 +16,7 @@ export type RenderItemType = {
     id: string;
     date: string;
     countDate: string;
+    countType: string;
   };
 };
 
@@ -31,7 +33,7 @@ export type EventItemContainerType = {
 export type InitialStateType = {
   showModal: boolean;
   currentEvent: EventType | null;
-  events: EventsListType | [];
+  events: EventsListType | null;
 };
 export enum ActionsTypes {
   GetEventsList = "GET_EVENTS_LIST",
@@ -54,7 +56,8 @@ type ActionMap<M extends { [index: string]: any }> = {
   }
 };
 
-export type CountFor = "hour" | "day" | "week" | "month" | "year";
+export type CountFor = typeof CountTypes[keyof typeof CountTypes];
+
 export type CountOnlySelectionDay = {
   monday: boolean;
   tuesday: boolean;
