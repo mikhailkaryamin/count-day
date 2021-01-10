@@ -88,7 +88,7 @@ const EventEdit: React.FC = () => {
               )}
               <View style={styles.modalItem}>
                 <Button
-                  title="Add event"
+                  title="Save"
                   color={ColorScheme.LIGHTER_BLUE}
                   onPress={() => writeItemToStorage()}
                 />
@@ -96,7 +96,7 @@ const EventEdit: React.FC = () => {
               <View style={styles.modalItem}>
                 <Button
                   color={ColorScheme.DARK_BLUE_SUB}
-                  title="Close edit event"
+                  title="Cancel"
                   onPress={() => {
                     dispatch(ActionCreator.showModal(false));
                   }}
