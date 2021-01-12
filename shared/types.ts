@@ -8,6 +8,7 @@ export type ItemType = {
   date: string;
   countDate: string;
   countType: string;
+  onPressItem: () => void;
 };
 
 export type RenderItemType = {
@@ -24,14 +25,20 @@ export type PropsProvider = {
   children: children;
 };
 
-export type EventItemContainerType = {
+export type PropsEventItemContainer = {
   children: children;
   bgColor: string;
 }
 
+export type PropsEventEdit = {
+  onNeededRead: () => void;
+}
+
 // Reducers and context types
 export type InitialStateType = {
-  showModal: boolean;
+  optionsApp: {
+    showModal: boolean;
+  };
   currentEvent: EventType | null;
   events: EventsListType | null;
 };
@@ -43,6 +50,8 @@ export enum ActionsTypes {
   SetTitle = "SET_TITLE",
   SetCountFor = "SET_COUNT_FOR",
   SetCountOnlySelectionDay = "SET_COUNT_ONLY_SELECTION_DAY",
+  SetCurrentEvent = "SET_CURRENT_EVENT",
+  ResetCurrentEvent = "RESET_CURRENT_EVENT",
 }
 
 type ActionMap<M extends { [index: string]: any }> = {
@@ -74,7 +83,12 @@ type EventPayload = {
   [ActionsTypes.SetTitle]: string;
   [ActionsTypes.SetCountFor]: CountFor;
   [ActionsTypes.SetCountOnlySelectionDay]: CountOnlySelectionDay;
+  [ActionsTypes.SetCurrentEvent]: EventType;
+  [ActionsTypes.ResetCurrentEvent];
 };
+
+type EventActions = ActionMap<EventPayload>[keyof ActionMap<EventPayload>];
+
 export type EventType = {
   id: string;
   date: string;
@@ -82,12 +96,15 @@ export type EventType = {
   countFor: CountFor;
   countOnlySelectionDay: CountOnlySelectionDay,
 };
-type EventActions = ActionMap<EventPayload>[keyof ActionMap<EventPayload>];
 
-type ModalPayload = {
+type OptionsAppPayload = {
   [ActionsTypes.ShowModal]: boolean;
 };
-type ModalActions = ActionMap<ModalPayload>[keyof ActionMap<ModalPayload>];
+type OptionsAppActions = ActionMap<OptionsAppPayload>[keyof ActionMap<OptionsAppPayload>];
+
+export type OptionsAppType = {
+  showModal: boolean;
+}
 
 type EventsListPayload = {
   [ActionsTypes.GetEventsList]: EventType[];
@@ -95,7 +112,7 @@ type EventsListPayload = {
 type EventsListActions = ActionMap<EventsListPayload>[keyof ActionMap<EventsListPayload>];
 export type EventsListType = EventType[];
 
-export type ActionType = EventsListActions | ModalActions | EventActions;
+export type ActionType = EventsListActions | OptionsAppActions | EventActions;
 
 // hooks
 export type StatusStorageType = typeof StatusStorage[keyof typeof StatusStorage] | undefined;
