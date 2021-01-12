@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, Dispatch } from "react";
 import {
-  modalReducer,
+  optionsAppReducer,
   eventReducer,
   eventsListReducer
 } from "../reducers/reducers";
@@ -8,7 +8,9 @@ import {
 import { InitialStateType, PropsProvider, ActionType } from "./types";
 
 const initialState = {
-  showModal: false,
+  optionsApp: {
+    showModal: false,
+  },
   currentEvent: null,
   events: null,
 };
@@ -22,10 +24,10 @@ const AppContext = createContext<{
 });
 
 const mainReducer = (
-    { showModal, currentEvent, events }: InitialStateType,
+    { optionsApp, currentEvent, events }: InitialStateType,
     action: ActionType
 ) => ({
-  showModal: modalReducer(showModal, action),
+  optionsApp: optionsAppReducer(optionsApp, action),
   currentEvent: eventReducer(currentEvent, action),
   events: eventsListReducer(events, action),
 });
