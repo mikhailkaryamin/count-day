@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
@@ -11,9 +11,14 @@ import EventEdit from "../components/EventEdit";
 import ButtonAdd from "../components/ButtonAdd";
 
 const Events = () => {
+  const [readNeeded, setReadNeeded] = useState(true);
   const { dispatch } = useContext(AppContext);
 
   const { getItem } = useAsyncStorage(KeyStorage.EVENT);
+
+  const onNeededRead = () => {
+    setReadNeeded(true);
+  };
 
   const readEventsFromStorage = async () => {
     const eventsListJSON = await getItem();
@@ -25,14 +30,20 @@ const Events = () => {
   };
 
   useEffect(() => {
-    readEventsFromStorage();
-  }, []);
+    if (readNeeded) {
+      readEventsFromStorage();
+    }
+
+    setReadNeeded(false);
+  }, [readNeeded]);
 
   return (
     <View style={styles.container}>
       <StatusBar />
       <EventsList />
-      <EventEdit />
+      <EventEdit
+        onNeededRead={onNeededRead}
+      />
       <ButtonAdd />
     </View>
   );
