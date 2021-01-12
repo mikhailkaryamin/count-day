@@ -4,13 +4,15 @@ import { Picker } from "@react-native-picker/picker";
 import { ActionCreator } from "../actions/actions";
 
 import { AppContext } from "../shared/context";
-import { ColorScheme, CountTypes } from "../shared/consts";
+import { ColorScheme, CountTypes, InitialCurrentEvent } from "../shared/consts";
 import { CountFor } from "../shared/types";
 
-const CountTypesList = () => {
-  const [type, setType] = useState<CountFor>(CountTypes.Day);
+const CountForList = () => {
+  const { state, dispatch } = useContext(AppContext);
 
-  const { dispatch } = useContext(AppContext);
+  const countFor = state.currentEvent?.countFor || InitialCurrentEvent.COUNT_FOR;
+
+  const [type, setType] = useState<CountFor>(() => countFor);
 
   const onChange = (item: CountFor) => {
     setType(item);
@@ -38,4 +40,4 @@ const CountTypesList = () => {
   );
 };
 
-export default CountTypesList;
+export default CountForList;
