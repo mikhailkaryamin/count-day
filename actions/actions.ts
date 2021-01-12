@@ -25,6 +25,13 @@ const ActionCreator = {
     type: ActionsTypes.SetCountOnlySelectionDay,
     payload,
   }),
+  setCurrentEvent: (payload: EventType): ActionType => ({
+    type: ActionsTypes.SetCurrentEvent,
+    payload,
+  }),
+  resetCurrentEvent: (): ActionType => ({
+    type: ActionsTypes.ResetCurrentEvent,
+  }),
 };
 
 
