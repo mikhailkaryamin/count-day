@@ -5,7 +5,7 @@ import CheckBox from "@react-native-community/checkbox";
 import { ActionCreator } from "../actions/actions";
 
 import { AppContext } from "../shared/context";
-import { ColorScheme } from "../shared/consts";
+import { ColorScheme, InitialCurrentEvent } from "../shared/consts";
 import { CountOnlySelectionDay } from "../shared/types";
 
 const COUNT_DAYS = [
@@ -18,20 +18,12 @@ const COUNT_DAYS = [
   { name: "Sunday", id: "sunday" },
 ];
 
-const CHECK_LIST = {
-  monday: true,
-  tuesday: true,
-  wednesday: true,
-  thursday: true,
-  friday: true,
-  saturday: true,
-  sunday: true,
-};
-
 const CountOnlyDaysList = () => {
-  const [daysList, setDaysList] = useState<CountOnlySelectionDay>(CHECK_LIST);
+  const { state, dispatch } = useContext(AppContext);
 
-  const { dispatch } = useContext(AppContext);
+  const countOnlySelectionDay = state.currentEvent?.countOnlySelectionDay || InitialCurrentEvent.COUNT_ONLY_SELECTION_DAY;
+
+  const [daysList, setDaysList] = useState<CountOnlySelectionDay>(() => countOnlySelectionDay);
 
   useEffect(() => {
     dispatch(ActionCreator.setCountOnlySelectionDay(daysList));
