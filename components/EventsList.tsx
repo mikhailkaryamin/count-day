@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import { View, FlatList, StyleSheet, Text } from "react-native";
+import { View, FlatList, StyleSheet, Text, Pressable } from "react-native";
 
+import { ActionCreator } from "../actions/actions";
 import { AppContext } from "../shared/context";
 import { ColorScheme } from "../shared/consts";
 import { ItemType, RenderItemType } from "../shared/types";
@@ -8,27 +9,31 @@ import { calculateOffset } from "../shared/utils";
 
 import EventItemContainer from "./EventItemContainer";
 
-const Item = ({ title, date, countDate, countType }: ItemType) => {
+const EventItem = ({ title, date, countDate, countType, onPressItem }: ItemType) => {
   return (
     <EventItemContainer
       bgColor={ColorScheme.DARK_BLUE_MAIN}
     >
-      <View style={styles.itemContainer}>
-        <View style={styles.itemLeft}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.title}>{date}</Text>
+      <Pressable
+        onPress={onPressItem}
+      >
+        <View style={styles.itemContainer}>
+          <View style={styles.itemLeft}>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{date}</Text>
+          </View>
+          <View style={styles.itemRight}>
+            <Text style={{ ...styles.title, ...styles.countNumber }}>{countDate}</Text>
+            <Text style={{ ...styles.title, ...styles.countType }}>{countType}</Text>
+          </View>
         </View>
-        <View style={styles.itemRight}>
-          <Text style={{ ...styles.title, ...styles.countNumber }}>{countDate}</Text>
-          <Text style={{ ...styles.title, ...styles.countType }}>{countType}</Text>
-        </View>
-      </View>
+      </Pressable>
     </EventItemContainer>
   );
 };
 
 const EventsList = () => {
-  const { state } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
 
   const getFormatEventsList = () => {
     if (state.events?.length) {
@@ -52,8 +57,15 @@ const EventsList = () => {
     }
   };
 
+  const onPressItem = (id: string) => {
+    const currentEvent = state.events.filter((eventItem) => eventItem.id === id);
+
+    dispatch(ActionCreator.setCurrentEvent(currentEvent[0]));
+    dispatch(ActionCreator.showModal(true));
+  };
+
   const renderItem = ({ item }: RenderItemType) => (
-    <Item title={item.title} date={item.date} countDate={item.countDate} countType={item.countType}/>
+    <EventItem title={item.title} date={item.date} countDate={item.countDate} countType={item.countType} onPressItem={() => onPressItem(item.id)}/>
   );
 
   return (
