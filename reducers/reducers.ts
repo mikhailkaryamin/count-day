@@ -1,9 +1,12 @@
-import { EventType, EventsListType, ActionsTypes, ActionType } from "../shared/types";
+import { EventType, EventsListType, ActionsTypes, ActionType, OptionsAppType } from "../shared/types";
 
-const modalReducer = (state: boolean, action: ActionType) => {
+const optionsAppReducer = (state: OptionsAppType, action: ActionType) => {
   switch (action.type) {
     case ActionsTypes.ShowModal:
-      return !state;
+      return {
+        ...state,
+        showModal: action.payload,
+      };
     default:
       return state;
   }
@@ -45,13 +48,19 @@ const eventReducer = (state: EventType | null, action: ActionType) => {
         ...state,
         countOnlySelectionDay: action.payload,
       };
+    case ActionsTypes.SetCurrentEvent:
+      return {
+        ...action.payload,
+      };
+    case ActionsTypes.ResetCurrentEvent:
+      return null;
     default:
       return state;
   }
 };
 
 export {
-  modalReducer,
+  optionsAppReducer,
   eventReducer,
   eventsListReducer
 };
