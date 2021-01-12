@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-import { EventItemContainerType } from "../shared/types";
+import { PropsEventItemContainer } from "../shared/types";
 
-const EventItemContainer = ({ children, bgColor }: EventItemContainerType) => {
+const EventItemContainer = ({ children, bgColor }: PropsEventItemContainer) => {
   return (
     <View style={{ ...styles.item, backgroundColor: bgColor }}>
       {children}
