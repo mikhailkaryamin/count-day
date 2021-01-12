@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { View, StyleSheet, Pressable, Text } from "react-native";
 
+import { ActionCreator } from "../actions/actions";
 import { AppContext } from "../shared/context";
-import { ActionsTypes } from "../shared/types";
 import { ColorScheme } from "../shared/consts";
 
 import EventItemContainer from "./EventItemContainer";
@@ -16,10 +16,7 @@ const ButtonAdd = () => {
       <View style={styles.container}>
         <Pressable
           onPress={() =>
-            dispatch({
-              type: ActionsTypes.ShowModal,
-              payload: true,
-            })
+            dispatch(ActionCreator.showModal(true))
           }
         >
           <View style={styles.button}>
