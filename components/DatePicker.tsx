@@ -7,12 +7,21 @@ import DateTimePicker, {
 import { ActionCreator } from "../actions/actions";
 
 import { AppContext } from "../shared/context";
-import { ColorScheme } from "../shared/consts";
+import { ColorScheme, InitialCurrentEvent } from "../shared/consts";
 
 const DatePicker = () => {
-  const [date, setDate] = useState(new Date());
+  const { state, dispatch } = useContext(AppContext);
+
+  const defaultDate = InitialCurrentEvent.DATE;
+  const isNullCurrentEvent = state.currentEvent === null;
+
+  const [date, setDate] = useState(() => {
+    const initialDate = isNullCurrentEvent ? new Date(defaultDate) : new Date();
+
+    return initialDate;
+  });
+
   const [show, setShow] = useState(false);
-  const { dispatch } = useContext(AppContext);
 
   const onChange = (evt: EventType, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || date;
