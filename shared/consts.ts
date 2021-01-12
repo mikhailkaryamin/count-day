@@ -1,3 +1,13 @@
+const INITIAL_COUNT_DAYS = {
+  monday: true,
+  tuesday: true,
+  wednesday: true,
+  thursday: true,
+  friday: true,
+  saturday: true,
+  sunday: true,
+};
+
 const CountTypes = {
   Day: "day",
   Week: "week",
@@ -11,7 +21,15 @@ const ColorScheme = {
   LIGHT_WHITE: "#EEFBFB",
   LIGHTER_BLUE: "#007CC7",
   LIGHTEST_BLUE: "#4DA8DA",
+  DARK_RED: "#c70000",
 } as const;
+
+const InitialCurrentEvent = {
+  DATE: new Date().toJSON(),
+  TITLE: "",
+  COUNT_FOR: CountTypes.Day,
+  COUNT_ONLY_SELECTION_DAY: INITIAL_COUNT_DAYS,
+};
 
 const KeyStorage = {
   EVENT: "@events_storage"
@@ -31,8 +49,10 @@ const StatusStorage = {
 
 
 export {
+  INITIAL_COUNT_DAYS,
   CountTypes,
   ColorScheme,
+  InitialCurrentEvent,
   KeyStorage,
   MS,
   StatusStorage,
