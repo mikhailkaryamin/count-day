@@ -13,26 +13,33 @@ import { nanoid } from "nanoid/async/index.native";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 import DatePicker from "./DatePicker";
-import CountTypesList from "./CountTypesList";
+import CountForList from "./CountForList";
 import CountOnlyDaysList from "./CountOnlyDaysList";
 
 import { ActionCreator } from "../actions/actions";
 
 import { AppContext } from "../shared/context";
-import { ColorScheme, KeyStorage } from "../shared/consts";
+import { ColorScheme, KeyStorage, InitialCurrentEvent } from "../shared/consts";
+import { PropsEventEdit } from "../shared/types";
 
-const EventEdit: React.FC = () => {
+const EventEdit = ({ onNeededRead }: PropsEventEdit) => {
   const { state, dispatch } = useContext(AppContext);
-  const { setItem } = useAsyncStorage(KeyStorage.EVENT);
+  const { setItem, removeItem } = useAsyncStorage(KeyStorage.EVENT);
 
   const isCountForDay = state.currentEvent?.countFor === "day";
 
-  const writeItemToStorage = async () => {
-    const id = await nanoid();
+  const title = state.currentEvent?.title || InitialCurrentEvent.TITLE;
+  const defaultId = state.currentEvent?.id;
+  const eventFromStorage = state.events?.some(
+      (eventItem) => eventItem.id === defaultId
+  );
+
+  const writeEventsToStorage = async () => {
+    const id = defaultId || (await nanoid());
 
     const currentEvent = {
       id,
-      ...state.currentEvent
+      ...state.currentEvent,
     };
 
     const getNewEventsList = () => {
@@ -50,11 +57,33 @@ const EventEdit: React.FC = () => {
     };
 
     await setItem(getNewEventsList());
+    onNeededRead();
+  };
+
+  const removeEventFromStorage = async (id: string) => {
+    if (!state.events !== null) {
+      const newEventsList = state.events.filter(
+          (eventItem) => eventItem.id !== id
+      );
+
+      if (newEventsList.length) {
+        const newEventsListJSON = JSON.stringify(newEventsList);
+        await setItem(newEventsListJSON);
+      } else {
+        await removeItem();
+      }
+
+      onNeededRead();
+    }
   };
 
   return (
     <View>
-      <Modal animationType="fade" transparent={true} visible={state.showModal}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={state.optionsApp.showModal}
+      >
         <View style={styles.centeredView}>
           <ScrollView>
             <View style={styles.modalView}>
@@ -68,6 +97,7 @@ const EventEdit: React.FC = () => {
                     dispatch(ActionCreator.setTitle(text));
                   }}
                   maxLength={25}
+                  value={title}
                 />
               </View>
               <View style={styles.modalItem}>
@@ -76,7 +106,7 @@ const EventEdit: React.FC = () => {
               </View>
               <View style={{ ...styles.modalSelectCount, ...styles.modalItem }}>
                 <Text style={styles.modalTitle}>Count for</Text>
-                <CountTypesList />
+                <CountForList />
               </View>
               {isCountForDay && (
                 <View style={styles.modalItem}>
@@ -90,7 +120,11 @@ const EventEdit: React.FC = () => {
                 <Button
                   title="Save"
                   color={ColorScheme.LIGHTER_BLUE}
-                  onPress={() => writeItemToStorage()}
+                  onPress={() => {
+                    writeEventsToStorage();
+                    dispatch(ActionCreator.showModal(false));
+                    dispatch(ActionCreator.resetCurrentEvent());
+                  }}
                 />
               </View>
               <View style={styles.modalItem}>
@@ -99,9 +133,23 @@ const EventEdit: React.FC = () => {
                   title="Cancel"
                   onPress={() => {
                     dispatch(ActionCreator.showModal(false));
+                    dispatch(ActionCreator.resetCurrentEvent());
                   }}
                 />
               </View>
+              {eventFromStorage && (
+                <View style={styles.modalItem}>
+                  <Button
+                    color={ColorScheme.DARK_RED}
+                    title="Delete"
+                    onPress={() => {
+                      removeEventFromStorage(defaultId);
+                      dispatch(ActionCreator.showModal(false));
+                      dispatch(ActionCreator.resetCurrentEvent());
+                    }}
+                  />
+                </View>
+              )}
             </View>
           </ScrollView>
         </View>
