@@ -6,7 +6,7 @@ import { ActionCreator } from "../actions/actions";
 
 import { AppContext } from "../shared/context";
 import { ColorScheme, InitialCurrentEvent } from "../shared/consts";
-import { CountOnlySelectionDay } from "../shared/types";
+import { CountOnlySelectedDays } from "../shared/types";
 
 const COUNT_DAYS = [
   { name: "Monday", id: "monday" },
@@ -23,31 +23,32 @@ const CountOnlyDaysList = () => {
 
   const countOnlySelectionDay = state.currentEvent?.countOnlySelectionDay || InitialCurrentEvent.COUNT_ONLY_SELECTION_DAY;
 
-  const [daysList, setDaysList] = useState<CountOnlySelectionDay>(() => countOnlySelectionDay);
+  const [daysList, setDaysList] = useState<CountOnlySelectedDays>(() => countOnlySelectionDay);
 
   useEffect(() => {
-    dispatch(ActionCreator.setCountOnlySelectionDay(daysList));
+    dispatch(ActionCreator.setCountOnlySelectedDays(daysList));
   }, [daysList]);
 
   return (
     <View style={styles.container}>
-      {COUNT_DAYS.map((day) => {
+      {COUNT_DAYS.map((dayItem, i) => {
+        const [day, selected] = daysList[i];
+
         return (
-          <View key={day.id} style={styles.item}>
+          <View key={day} style={styles.item}>
             <CheckBox
-              value={daysList[day.id]}
+              value={selected}
               tintColors={{ true: ColorScheme.DARK_BLUE_MAIN, false: ColorScheme.DARK_BLUE_MAIN }}
               onValueChange={(value) =>
                 setDaysList((daysListPrev) => {
-                  const currentDay = day.id;
-                  return {
-                    ...daysListPrev,
-                    [currentDay]: value,
-                  };
+                  const newDaysList = daysListPrev.slice();
+
+                  newDaysList[i][1] = value;
+                  return newDaysList;
                 })
               }
             />
-            <Text style={styles.title}>{`${day.name}`}</Text>
+            <Text style={styles.title}>{`${day}`}</Text>
           </View>
         );
       })}

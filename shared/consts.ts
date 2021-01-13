@@ -1,12 +1,13 @@
-const INITIAL_COUNT_DAYS = {
-  monday: true,
-  tuesday: true,
-  wednesday: true,
-  thursday: true,
-  friday: true,
-  saturday: true,
-  sunday: true,
-};
+import { CountOnlySelectedDays } from "./types";
+const INITIAL_COUNT_DAYS: CountOnlySelectedDays = [
+  ["monday", true],
+  ["tuesday", true],
+  ["wednesday", true],
+  ["thursday", true],
+  ["friday", true],
+  ["saturday", true],
+  ["sunday", true],
+];
 
 const CountTypes = {
   Day: "day",
