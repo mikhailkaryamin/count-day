@@ -56,7 +56,20 @@ const EventEdit = ({ onNeededRead }: PropsEventEdit) => {
       return newEventsList;
     };
 
-    await setItem(getNewEventsList());
+    const getEditionEventsList = () => {
+      const indexEditionEvent = state.events.findIndex((eventItem) => eventItem.id === defaultId);
+      const editionEventListSlice = state.events.slice();
+      editionEventListSlice[indexEditionEvent] = currentEvent;
+
+      return JSON.stringify(editionEventListSlice);
+    };
+
+    if (defaultId) {
+      await setItem(getEditionEventsList());
+    } else {
+      await setItem(getNewEventsList());
+    }
+
     onNeededRead();
   };
 
