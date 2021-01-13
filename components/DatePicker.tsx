@@ -14,13 +14,9 @@ const DatePicker = () => {
 
   const defaultDate = InitialCurrentEvent.DATE;
   const isNullCurrentEvent = state.currentEvent === null;
+  const initialDate = isNullCurrentEvent ? new Date(defaultDate) : new Date(state.currentEvent.date);
 
-  const [date, setDate] = useState(() => {
-    const initialDate = isNullCurrentEvent ? new Date(defaultDate) : new Date();
-
-    return initialDate;
-  });
-
+  const [date, setDate] = useState(initialDate);
   const [show, setShow] = useState(false);
 
   const onChange = (evt: EventType, selectedDate: Date | undefined) => {
