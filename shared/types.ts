@@ -9,6 +9,7 @@ export type ItemType = {
   countDate: string;
   countType: string;
   onPressItem: () => void;
+  prefixOffsetCount: string;
 };
 
 export type RenderItemType = {
@@ -18,6 +19,7 @@ export type RenderItemType = {
     date: string;
     countDate: string;
     countType: string;
+    prefixOffsetCount: string;
   };
 };
 
@@ -49,7 +51,7 @@ export enum ActionsTypes {
   SetDate = "SET_DATE",
   SetTitle = "SET_TITLE",
   SetCountFor = "SET_COUNT_FOR",
-  SetCountOnlySelectionDay = "SET_COUNT_ONLY_SELECTION_DAY",
+  SetCountOnlySelectedDay = "SET_COUNT_ONLY_SELECTED_DAYS",
   SetCurrentEvent = "SET_CURRENT_EVENT",
   ResetCurrentEvent = "RESET_CURRENT_EVENT",
 }
@@ -67,22 +69,16 @@ type ActionMap<M extends { [index: string]: any }> = {
 
 export type CountFor = typeof CountTypes[keyof typeof CountTypes];
 
-export type CountOnlySelectionDay = {
-  monday: boolean;
-  tuesday: boolean;
-  wednesday: boolean;
-  thursday: boolean;
-  friday: boolean;
-  saturday: boolean;
-  sunday: boolean;
-}
+type Days = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+
+export type CountOnlySelectedDays = Array<[(Days), boolean]>;
 
 type EventPayload = {
   [ActionsTypes.SetCurrentEventId]: string;
   [ActionsTypes.SetDate]: string;
   [ActionsTypes.SetTitle]: string;
   [ActionsTypes.SetCountFor]: CountFor;
-  [ActionsTypes.SetCountOnlySelectionDay]: CountOnlySelectionDay;
+  [ActionsTypes.SetCountOnlySelectedDay]: CountOnlySelectedDays;
   [ActionsTypes.SetCurrentEvent]: EventType;
   [ActionsTypes.ResetCurrentEvent];
 };
@@ -94,7 +90,7 @@ export type EventType = {
   date: string;
   title: string;
   countFor: CountFor;
-  countOnlySelectionDay: CountOnlySelectionDay,
+  countOnlySelectionDay: CountOnlySelectedDays,
 };
 
 type OptionsAppPayload = {
