@@ -43,7 +43,7 @@ const eventReducer = (state: EventType | null, action: ActionType) => {
         ...state,
         countFor: action.payload,
       };
-    case ActionsTypes.SetCountOnlySelectionDay:
+    case ActionsTypes.SetCountOnlySelectedDay:
       return {
         ...state,
         countOnlySelectionDay: action.payload,

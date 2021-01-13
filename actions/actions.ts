@@ -1,4 +1,4 @@
-import { ActionsTypes, ActionType, CountFor, CountOnlySelectionDay, EventType } from "../shared/types";
+import { ActionsTypes, ActionType, CountFor, CountOnlySelectedDays, EventType } from "../shared/types";
 
 const ActionCreator = {
   getEventsList: (payload: EventType[]): ActionType => ({
@@ -21,8 +21,8 @@ const ActionCreator = {
     type: ActionsTypes.SetCountFor,
     payload,
   }),
-  setCountOnlySelectionDay: (payload: CountOnlySelectionDay): ActionType => ({
-    type: ActionsTypes.SetCountOnlySelectionDay,
+  setCountOnlySelectedDays: (payload: CountOnlySelectedDays): ActionType => ({
+    type: ActionsTypes.SetCountOnlySelectedDay,
     payload,
   }),
   setCurrentEvent: (payload: EventType): ActionType => ({
