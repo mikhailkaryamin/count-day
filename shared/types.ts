@@ -8,6 +8,7 @@ export type ItemType = {
   date: string;
   countDate: string;
   countType: string;
+  isHighPriority: boolean;
   onPressItem: () => void;
   prefixOffsetCount: string;
 };
@@ -19,6 +20,7 @@ export type RenderItemType = {
     date: string;
     countDate: string;
     countType: string;
+    isHighPriority: boolean;
     prefixOffsetCount: string;
   };
 };
@@ -50,6 +52,7 @@ export enum ActionsTypes {
   SetCurrentEventId = "SET_CURRENT_EVENT_ID",
   SetDate = "SET_DATE",
   SetTitle = "SET_TITLE",
+  SetHighPriority = "SET_HIGH_PRIORITY",
   SetCountFor = "SET_COUNT_FOR",
   SetCountOnlySelectedDay = "SET_COUNT_ONLY_SELECTED_DAYS",
   SetCurrentEvent = "SET_CURRENT_EVENT",
@@ -77,6 +80,7 @@ type EventPayload = {
   [ActionsTypes.SetCurrentEventId]: string;
   [ActionsTypes.SetDate]: string;
   [ActionsTypes.SetTitle]: string;
+  [ActionsTypes.SetHighPriority]: boolean;
   [ActionsTypes.SetCountFor]: CountFor;
   [ActionsTypes.SetCountOnlySelectedDay]: CountOnlySelectedDays;
   [ActionsTypes.SetCurrentEvent]: EventType;
@@ -89,6 +93,7 @@ export type EventType = {
   id: string;
   date: string;
   title: string;
+  isHighPriority: boolean;
   countFor: CountFor;
   countOnlySelectionDay: CountOnlySelectedDays,
 };
