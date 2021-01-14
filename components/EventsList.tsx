@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, FlatList, StyleSheet, Text, Pressable } from "react-native";
+import { View, FlatList, StyleSheet, Text, Pressable, Image } from "react-native";
 
 import { ActionCreator } from "../actions/actions";
 import { AppContext } from "../shared/context";
@@ -26,6 +26,7 @@ const EventItem = ({
   date,
   countDate,
   countType,
+  isHighPriority,
   onPressItem,
   prefixOffsetCount,
 }: ItemType) => {
@@ -52,6 +53,14 @@ const EventItem = ({
               </Text>
             </View>
           </View>
+          {isHighPriority && (
+            <View style={styles.containerMark}>
+              <Image
+                style={styles.imageMark}
+                source={require("../assets/images/exclamation-mark.png")}
+              />
+            </View>
+          )}
         </View>
       </Pressable>
     </EventItemContainer>
@@ -74,6 +83,7 @@ const EventsList = () => {
           id: item.id,
           title: item.title,
           date: dateEvent,
+          isHighPriority: item.isHighPriority,
           countDate: offsetCountStr,
           countType: countTypeChar,
           prefixOffsetCount,
@@ -101,6 +111,7 @@ const EventsList = () => {
       date={item.date}
       countDate={item.countDate}
       countType={item.countType}
+      isHighPriority={item.isHighPriority}
       onPressItem={() => onPressItem(item.id)}
       prefixOffsetCount={item.prefixOffsetCount}
     />
@@ -157,6 +168,14 @@ const styles = StyleSheet.create({
   countType: {
     fontSize: 32,
   },
+  containerMark: {
+    position: "absolute",
+    right: -32,
+  },
+  imageMark: {
+    width: 64,
+    height: 64,
+  }
 });
 
 export default EventsList;
