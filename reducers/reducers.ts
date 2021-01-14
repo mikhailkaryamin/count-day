@@ -38,6 +38,11 @@ const eventReducer = (state: EventType | null, action: ActionType) => {
         ...state,
         title: action.payload,
       };
+    case ActionsTypes.SetHighPriority:
+      return {
+        ...state,
+        isHighPriority: action.payload,
+      };
     case ActionsTypes.SetCountFor:
       return {
         ...state,
