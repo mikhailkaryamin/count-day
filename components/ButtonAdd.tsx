@@ -10,14 +10,13 @@ import EventItemContainer from "./EventItemContainer";
 const ButtonAdd = () => {
   const { dispatch } = useContext(AppContext);
 
-  return (
+  const onPressButton = () => dispatch(ActionCreator.showModal(true));
 
+  return (
     <EventItemContainer bgColor={ColorScheme.LIGHTER_BLUE}>
       <View style={styles.container}>
         <Pressable
-          onPress={() =>
-            dispatch(ActionCreator.showModal(true))
-          }
+          onPress={onPressButton}
         >
           <View style={styles.button}>
             <Text style={styles.buttonText}>Add new event</Text>
