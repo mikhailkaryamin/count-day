@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 import { nanoid } from "nanoid/async/index.native";
+import CheckBox from "@react-native-community/checkbox";
 
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
@@ -29,15 +30,18 @@ const EventEdit = ({ onNeededRead }: PropsEventEdit) => {
   const isCountForDay = state.currentEvent?.countFor === "day";
 
   const title = state.currentEvent?.title || InitialCurrentEvent.TITLE;
+  const isHighPriorityFromState = typeof state.currentEvent?.isHighPriority === "boolean";
+  const isHighPriority = isHighPriorityFromState ? state.currentEvent?.isHighPriority : InitialCurrentEvent.IS_HIGH_PRIORITY;
   const defaultId = state.currentEvent?.id;
   const eventFromStorage = state.events?.some(
       (eventItem) => eventItem.id === defaultId
   );
 
   const writeEventsToStorage = async () => {
-    const id = defaultId || (await nanoid());
+    const id = await nanoid();
 
     const currentEvent = {
+      "isHighPriority": isHighPriority,
       id,
       ...state.currentEvent,
     };
@@ -57,14 +61,16 @@ const EventEdit = ({ onNeededRead }: PropsEventEdit) => {
     };
 
     const getEditionEventsList = () => {
-      const indexEditionEvent = state.events.findIndex((eventItem) => eventItem.id === defaultId);
+      const indexEditionEvent = state.events.findIndex(
+          (eventItem) => eventItem.id === defaultId
+      );
       const editionEventListSlice = state.events.slice();
       editionEventListSlice[indexEditionEvent] = currentEvent;
 
       return JSON.stringify(editionEventListSlice);
     };
 
-    if (defaultId) {
+    if (eventFromStorage) {
       await setItem(getEditionEventsList());
     } else {
       await setItem(getNewEventsList());
@@ -90,6 +96,31 @@ const EventEdit = ({ onNeededRead }: PropsEventEdit) => {
     }
   };
 
+  const onChangeTitle = (text) => {
+    dispatch(ActionCreator.setTitle(text));
+  };
+
+  const onChangeIsHighPriority = (value) => {
+    dispatch(ActionCreator.setHighPriority(value));
+  };
+
+  const onPressSaveButton = () => {
+    writeEventsToStorage();
+    dispatch(ActionCreator.showModal(false));
+    dispatch(ActionCreator.resetCurrentEvent());
+  };
+
+  const onPressCancelButton = () => {
+    dispatch(ActionCreator.showModal(false));
+    dispatch(ActionCreator.resetCurrentEvent());
+  };
+
+  const onPressDeleteButton = () => {
+    removeEventFromStorage(defaultId);
+    dispatch(ActionCreator.showModal(false));
+    dispatch(ActionCreator.resetCurrentEvent());
+  };
+
   return (
     <View>
       <Modal
@@ -97,69 +128,69 @@ const EventEdit = ({ onNeededRead }: PropsEventEdit) => {
         transparent={true}
         visible={state.optionsApp.showModal}
       >
-        <View style={styles.centeredView}>
+        <View style={styles.wrapper}>
           <ScrollView>
-            <View style={styles.modalView}>
-              <View style={styles.modalItem}>
-                <Text style={styles.modalTitle}>Title</Text>
+            <View style={styles.container}>
+              <View style={styles.item}>
+                <Text style={styles.itemTitle}>Title</Text>
                 <TextInput
                   placeholderTextColor={ColorScheme.LIGHT_WHITE}
                   placeholder="What is on that day? (optional)"
-                  style={{ ...styles.textInput, ...styles.nameEvent }}
-                  onChangeText={(text) => {
-                    dispatch(ActionCreator.setTitle(text));
-                  }}
+                  style={{ ...styles.textInput, ...styles.text }}
+                  onChangeText={onChangeTitle}
                   maxLength={25}
                   value={title}
                 />
               </View>
-              <View style={styles.modalItem}>
-                <Text style={styles.modalTitle}>Date</Text>
+              <View style={styles.item}>
+                <Text style={styles.itemTitle}>Date</Text>
                 <DatePicker />
               </View>
-              <View style={{ ...styles.modalSelectCount, ...styles.modalItem }}>
-                <Text style={styles.modalTitle}>Count for</Text>
+              <View style={{ ...styles.item, ...styles.containerHighPriority }}>
+                <CheckBox
+                  value={isHighPriority}
+                  tintColors={{
+                    true: ColorScheme.DARK_BLUE_MAIN,
+                    false: ColorScheme.DARK_BLUE_MAIN,
+                  }}
+                  onValueChange={onChangeIsHighPriority}
+                />
+                <Text style={{ ...styles.text, textAlignVertical: "center" }}>
+                  High priority
+                </Text>
+              </View>
+              <View style={{ ...styles.containerSelectCount, ...styles.item }}>
+                <Text style={styles.itemTitle}>Count for</Text>
                 <CountForList />
               </View>
               {isCountForDay && (
-                <View style={styles.modalItem}>
-                  <Text style={styles.modalTitle}>
+                <View style={styles.item}>
+                  <Text style={styles.itemTitle}>
                     Count only selection days
                   </Text>
                   <CountOnlyDaysList />
                 </View>
               )}
-              <View style={styles.modalItem}>
+              <View style={styles.item}>
                 <Button
                   title="Save"
                   color={ColorScheme.LIGHTER_BLUE}
-                  onPress={() => {
-                    writeEventsToStorage();
-                    dispatch(ActionCreator.showModal(false));
-                    dispatch(ActionCreator.resetCurrentEvent());
-                  }}
+                  onPress={onPressSaveButton}
                 />
               </View>
-              <View style={styles.modalItem}>
+              <View style={styles.item}>
                 <Button
                   color={ColorScheme.DARK_BLUE_SUB}
                   title="Cancel"
-                  onPress={() => {
-                    dispatch(ActionCreator.showModal(false));
-                    dispatch(ActionCreator.resetCurrentEvent());
-                  }}
+                  onPress={onPressCancelButton}
                 />
               </View>
               {eventFromStorage && (
-                <View style={styles.modalItem}>
+                <View style={styles.item}>
                   <Button
                     color={ColorScheme.DARK_RED}
                     title="Delete"
-                    onPress={() => {
-                      removeEventFromStorage(defaultId);
-                      dispatch(ActionCreator.showModal(false));
-                      dispatch(ActionCreator.resetCurrentEvent());
-                    }}
+                    onPress={onPressDeleteButton}
                   />
                 </View>
               )}
@@ -172,13 +203,13 @@ const EventEdit = ({ onNeededRead }: PropsEventEdit) => {
 };
 
 const styles = StyleSheet.create({
-  centeredView: {
+  wrapper: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
   },
-  modalView: {
+  container: {
     margin: 20,
     backgroundColor: ColorScheme.LIGHTEST_BLUE,
     borderRadius: 20,
@@ -193,10 +224,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-  },
   textInput: {
     alignSelf: "stretch",
     padding: 5,
@@ -204,23 +231,27 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderBottomWidth: 1,
   },
-  nameEvent: {
+  text: {
     height: 40,
     color: ColorScheme.LIGHT_WHITE,
   },
-  modalItem: {
+  item: {
     zIndex: 100,
     alignSelf: "stretch",
     marginBottom: 10,
   },
-  modalSelectCount: {
-    zIndex: 150,
-  },
-  modalTitle: {
+  itemTitle: {
     color: ColorScheme.LIGHT_WHITE,
     fontWeight: "bold",
     textTransform: "uppercase",
   },
+  containerSelectCount: {
+    zIndex: 150,
+  },
+  containerHighPriority: {
+    flexDirection: "row",
+    alignItems: "center",
+  }
 });
 
 export default EventEdit;
