@@ -25,6 +25,10 @@ const ActionCreator = {
     type: ActionsTypes.SetCountOnlySelectedDay,
     payload,
   }),
+  setHighPriority: (payload: boolean): ActionType => ({
+    type: ActionsTypes.SetHighPriority,
+    payload,
+  }),
   setCurrentEvent: (payload: EventType): ActionType => ({
     type: ActionsTypes.SetCurrentEvent,
     payload,
