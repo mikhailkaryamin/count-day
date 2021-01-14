@@ -30,6 +30,7 @@ const InitialCurrentEvent = {
   TITLE: "",
   COUNT_FOR: CountTypes.Day,
   COUNT_ONLY_SELECTION_DAY: INITIAL_COUNT_DAYS,
+  IS_HIGH_PRIORITY: true,
 };
 
 const KeyStorage = {
